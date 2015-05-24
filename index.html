@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shiny App Sales Pitch</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Shiny App Sales Pitch">
+  <meta name="author" content="Matthew Cryer">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Shiny App Sales Pitch</h1>
+    <h2>Wide Receivers in the NFL combine</h2>
+    <p>Matthew Cryer<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Product Overview</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The NFL is a 10 billion dollar business.  For many young athletes, this leads to outsized ambitions.  What does it take to make it to the NFL.  With a complete collection of NFL combine data and draft data from 1999 to present, this application will take three inputs and determine whether the athlete has the makings of a first or second round draft pick.  These picks make the lion&#39;s share of the money during early careers.  Young athletes are bombarded with the riches these picks command, yet have scant chance of acheiving that dream.  This product helps educate young athletes about their chances to make it to the big-time.</p>
+
+<p><img src='http://www.autisminvestigated.com/wp-content/uploads/2015/01/money.jpg'></img></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Model &amp; Data</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The data is pulled from two sites on the web.  It was process with complete automation.  No hand tailoring of the data was done.  This leads to some inaccuracy.  The two datasets from different sites have different names and spellings.  To normalize that a little, I stripped whitespace and punctuation.  Both sites used Caps for first letter of first and last.
+The data was available from 1999-2015.  All data was downloaded and included in the model</p>
+
+<p>Three models were tested.  randomForest(parRF), GBM and GLM were tested.
+First attempts were to predict round of draft.  This was impossible.  I stepped back in complexity trying to determine where I could make distinction.  I tried multiple things settling on 1rst and 2nd round draft picks.  Accuracy really bloomed when I altered that to Third round, but that&#39;s not where the money is.</p>
+
+<p>For the app, I rolled out the randomForest, but the GBM was just as good.  The main issue with the model is it has bad accuracy for actually predicting the 1rst and 2nd rounders.  It is very accurate at determining 3 round and later.</p>
+
+<p>It is possible to say, if the model predicts 1rst and 2nd you have about a 50% chance of that happening.  If the model predicts later rounds or free agents its about 85% accurate.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <article data-timings="">
+    <pre><code>## Loading required package: lattice
+## Loading required package: ggplot2
+## Loading required package: randomForest
+## randomForest 4.6-10
+## Type rfNews() to see new features/changes/bug fixes.
+</code></pre>
+
+<h5>Method: parRF</h5>
+
+<pre><code class="r">confusionMatrix(rf_predictions,testing$Round)
+</code></pre>
+
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction   0   1
+##          0  18  27
+##          1  40 141
+##                                           
+##                Accuracy : 0.7035          
+##                  95% CI : (0.6394, 0.7623)
+##     No Information Rate : 0.7434          
+##     P-Value [Acc &gt; NIR] : 0.9243          
+##                                           
+##                   Kappa : 0.1615          
+##  Mcnemar&#39;s Test P-Value : 0.1426          
+##                                           
+##             Sensitivity : 0.31034         
+##             Specificity : 0.83929         
+##          Pos Pred Value : 0.40000         
+##          Neg Pred Value : 0.77901         
+##              Prevalence : 0.25664         
+##          Detection Rate : 0.07965         
+##    Detection Prevalence : 0.19912         
+##       Balanced Accuracy : 0.57482         
+##                                           
+##        &#39;Positive&#39; Class : 0               
+## 
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>The Issues and Improvements</h2>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li>First rounders don&#39;t test.  Measures in all categories are required (looking at you Dez Bryant.)</li>
+<li>Need to include college stats.</li>
+<li>More Positions</li>
+<li>More parameters</li>
+<li>Model doesn&#39;t include colleges.</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Product Overview'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='The Model &amp; Data'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='NA'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='The Issues and Improvements'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
